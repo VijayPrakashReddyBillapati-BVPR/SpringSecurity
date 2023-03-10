@@ -1,5 +1,6 @@
 package com.security.practice.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+	@Autowired
+    private CustomAuthenticationProvider authenticationProvider;
+	
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.cors().disable()
@@ -19,9 +24,11 @@ public class SecurityConfig {
 		.requestMatchers("/emps/**").hasRole("ADMIN")
 		.and()
 		.authorizeHttpRequests()
-		.requestMatchers("/users").authenticated().and()
-		.formLogin()
+		.requestMatchers("/users").authenticated()
 		.and()
+		.httpBasic()
+		.and()
+		.authenticationProvider(authenticationProvider)
 		.build();		
 	}
 	

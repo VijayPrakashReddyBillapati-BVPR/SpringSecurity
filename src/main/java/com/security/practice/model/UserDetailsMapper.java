@@ -25,7 +25,6 @@ public class UserDetailsMapper {
 			GrantedAuthority authority = new SimpleGrantedAuthority(userRole);
 			roles.add(authority);
 		}
-		System.out.println(toString());
 	}
 
 	public String getUserName() {
@@ -47,13 +46,4 @@ public class UserDetailsMapper {
 	public List<GrantedAuthority> getRoles() {
 		return roles;
 	}
-
-	@Override
-	public String toString() {
-		return "UserDetailsMapper [" + (userName != null ? "userName=" + userName + ", " : "")
-				+ (email != null ? "email=" + email + ", " : "")
-				+ "isActive=" + isActive + ", "
-				+ (roles != null ? "roles=" + roles : "") + "]";
-	}
-
 }

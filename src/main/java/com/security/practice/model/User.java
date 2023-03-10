@@ -73,5 +73,9 @@ public class User  implements Serializable{
 	public void setId(Long id) {
 		Id = id;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 }

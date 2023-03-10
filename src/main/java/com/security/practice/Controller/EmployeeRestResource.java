@@ -34,9 +34,9 @@ public class EmployeeRestResource {
 
 
     @SuppressWarnings("deprecation")
-	@PostMapping("/emps/{id}")
-    public ResponseEntity<User> addUser(@PathVariable Long id){
+	@GetMapping("/emps/{id}")
+    public ResponseEntity<String> getUser(@PathVariable Long id){
     	User user = userRepository.getById(id);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<String>("<h1>welcome User<h1>", HttpStatus.OK);
     }
 }

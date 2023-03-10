@@ -1,5 +1,7 @@
 package com.security.practice.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,8 +10,9 @@ import jakarta.persistence.Id;
 
 @Entity
 @Table(name="roles")
-public class Roles {
+public class Roles implements Serializable{
 
+	private static final long serialVersionUID = 5711096610215477511L;
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SpringSecurity_RolesSequence")
 	private Long Id;
