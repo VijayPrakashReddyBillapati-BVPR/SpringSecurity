@@ -13,12 +13,13 @@ create table USERS (
 alter table USERS add constraint USERS_PK primary key (Email);
 alter table USERS add constraint USERS_UK unique (NAME);
 
+
 create table ROLES
 (
   ID   BIGINT not null,
   ROLE_NAME VARCHAR(30) not null
 ) ;
---  
+
 alter table ROLES add constraint ROLES_PK primary key (ID);
 alter table ROLES add constraint ROLES_UK unique (ROLE_NAME);
 
@@ -28,7 +29,7 @@ create table USER_ROLES
   Email  VARCHAR(50) not null,
   ROLE_ID BIGINT not null
 );
---  
+
 alter table USER_ROLES add constraint USER_ROLE_PK primary key (USER_ROLE_ID);
 alter table USER_ROLES add constraint USER_ROLE_UK unique (Email, ROLE_ID);
 
