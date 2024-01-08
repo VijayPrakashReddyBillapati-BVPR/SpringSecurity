@@ -1,0 +1,7 @@
+// Enable CORS and disable CSRF
+
+// Set session management to stateless
+
+// Set unauthorized requests exception handler
+
+// Add JWT token filter

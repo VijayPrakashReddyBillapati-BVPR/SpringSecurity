@@ -34,6 +34,7 @@ public class Users {
 
 	@NotBlank
 	@Nonnull
+	@Size(min = 3, message =  "name should have atleast 3 characters")
 	private String name;
 
 	@Column(nullable = false, length = 60) // Increase the length to accommodate BCrypt hashed passwords

@@ -1,0 +1,45 @@
+-- Insert roles
+INSERT INTO roles (name) VALUES ('ADMIN');
+INSERT INTO roles (name) VALUES ('USER');
+
+update roles set name = 'USER' where id =2;
+
+-- Insert users
+INSERT INTO users (id, name, password) VALUES (123451, 'John', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- password123
+INSERT INTO users (id, name, password) VALUES (123452, 'Jane', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- secure456
+INSERT INTO users (id, name, password) VALUES (123453, 'Bob', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu');  -- letmein789
+INSERT INTO users (id, name, password) VALUES (123454, 'Alice', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- qwerty123
+INSERT INTO users (id, name, password) VALUES (123455, 'Charlie', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- password456
+INSERT INTO users (id, name, password) VALUES (123456, 'Eva', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- secure789
+INSERT INTO users (id, name, password) VALUES (123457, 'David', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- letmein123
+INSERT INTO users (id, name, password) VALUES (123458, 'Grace', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- abc123
+INSERT INTO users (id, name, password) VALUES (123459, 'Frank', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- xyz789
+INSERT INTO users (id, name, password) VALUES (123450, 'Helen', '$2a$30$4fPBrQRhDQG8TDPiR6tXPOU3q8W6sdVq4twCkYffOASLC3uf7WRWu'); -- pass123
+
+-- Insert user roles
+INSERT INTO user_roles (user_id, role_id) VALUES (123451, 1); -- John, ROLE_ADMIN
+INSERT INTO user_roles (user_id, role_id) VALUES (123452, 2); -- Jane, ROLE_USER
+INSERT INTO user_roles (user_id, role_id) VALUES (123453, 2); -- Bob, ROLE_USER
+INSERT INTO user_roles (user_id, role_id) VALUES (123454, 1); -- Alice, ROLE_ADMIN
+INSERT INTO user_roles (user_id, role_id) VALUES (123455, 2); -- Charlie, ROLE_USER
+INSERT INTO user_roles (user_id, role_id) VALUES (123456, 2); -- Eva, ROLE_USER
+INSERT INTO user_roles (user_id, role_id) VALUES (123457, 1); -- David, ROLE_ADMIN
+INSERT INTO user_roles (user_id, role_id) VALUES (123458, 1); -- Grace, ROLE_ADMIN
+INSERT INTO user_roles (user_id, role_id) VALUES (123459, 2); -- Frank, ROLE_USER
+INSERT INTO user_roles (user_id, role_id) VALUES (123450, 2); -- Helen, ROLE_USER
+
+
+
+select * from Users;
+select * from roles;
+select * from user_roles;
+
+select u.id, u.name, u.password, r.name as role 
+from users u
+join user_roles ur on u.id = ur.user_id
+join roles r on r.id = ur.role_id order by u.id;
+
+SELECT u.id, u.name, r.name as role
+FROM users u
+JOIN user_roles ur ON u.id = ur.user_id
+JOIN roles r ON ur.role_id = r.id;

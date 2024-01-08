@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,6 @@ import com.authserver.services.UserDataService;
 @RequestMapping("/api")
 public class UserResource {
 	private static final Logger logger = LoggerFactory.getLogger(UserResource.class);
-
 	
 	private UserDataService userService;
 
@@ -35,7 +35,7 @@ public class UserResource {
         this.userService = userService;
     }
 
-	@GetMapping("/users")
+	@GetMapping(path = "/users", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/x-yaml", MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<List<Users>> getUsers() {
 		logger.info("Fetching all users");
 		List<Users> list = userService.getUsers();
@@ -43,12 +43,12 @@ public class UserResource {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(list);
 	}
 	
-	@GetMapping("/users/{id}")
+	@GetMapping(path = "/users/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/x-yaml", MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<Object> getUser(@PathVariable Long id) {
 	    logger.info("Fetching user with ID: {}", id);
 	    Optional<Users> user = userService.getUsers(id);
 	    if (user.isPresent()) {
-	        logger.info("User found with ID {}: {}", id, user.get());
+	        logger.info("User found with ID {}", id);
 	        return ResponseEntity.ok(user.get());
 	    } else {
 	        logger.warn("User not found with ID: {}", id);

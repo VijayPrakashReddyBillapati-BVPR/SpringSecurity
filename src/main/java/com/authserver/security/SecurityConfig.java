@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -55,19 +57,28 @@ public class SecurityConfig {
 		
 		http
 		.authorizeHttpRequests(request -> request
+//				.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+				.requestMatchers("/swagger-ui/**").permitAll()
 				.requestMatchers("/auth/login/**").permitAll()
 				.requestMatchers("/h2-console/**").permitAll()
 				.requestMatchers(HttpMethod.GET,"/api/users/**").hasAnyRole("USER","ADMIN","MANAGER")
 				.requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-				.anyRequest().authenticated()
-				)
+				.requestMatchers("/db/**").hasRole("ADMIN")
+				.requestMatchers("/db/**").hasAuthority("DB")
+//				.access(allOf(hasAuthority("DB"), hasRole("ADMIN")))
+				.anyRequest().authenticated())
 		.authenticationProvider(authenticationProvider())
 		.addFilterBefore(jwtTokenFilter,UsernamePasswordAuthenticationFilter.class);
 		
-		http.headers(header -> header.frameOptions(frame -> frame.disable()));		
+		http
+//		.requiresChannel(channel -> channel.anyRequest().requiresSecure())
+		.headers(header -> header
+				.frameOptions(frame -> frame.sameOrigin())
+                .contentTypeOptions(content -> content.disable()));		
+		
+		
 		http.httpBasic(Customizer.withDefaults());
-		// Add JWT token filter
 		return http.build();
 	}
 	
@@ -83,5 +94,14 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
+    }
+    
+    @Bean
+    static RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_MANAGER\n" +
+                "ROLE_MANAGER > ROLE_USER\n" +
+                "ROLE_USER > ROLE_GUEST");
+        return hierarchy;
     }
 }
